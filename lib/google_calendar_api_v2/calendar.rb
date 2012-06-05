@@ -2,62 +2,29 @@ module GoogleCalendarApiV2
   class Calendar
     include Base
 
-    attr_reader :events
+    attr_reader :events, :connection, :client
 
-    def initialize(connection)
-      @connection = connection
+    def initialize(client)
+      @client = client
+      @connection = @client.discovered_api('calendar', 'v3')
     end
 
-    def find(calendar_token, url = nil, redirect_count = 0)
-      url ||= "https://www.google.com/calendar/feeds/default/allcalendars/full/#{calendar_token}?alt=jsonc"
-      response = @connection.get url, Client::HEADERS
-
-      raise 'Redirection Loop' if redirect_count > 3
-
-      if success? response
-        item = JSON.parse(response.body)['data']
-        Response::Calendar.new(item, @connection)
-      elsif redirect? response
-        find(calendar_token, response['location'], redirect_count += 1)
-      end
+    def list
+      list = client.execute(connection.calendar_list.list)
+      list.data.items
     end
 
-    def all(url = nil, redirect_count = 0)
-      url ||= "https://www.google.com/calendar/feeds/default/allcalendars/full?alt=jsonc"
-      response = @connection.get url, Client::HEADERS
-
-      if success? response
-        # Response::Event.new(response, @connection, @calendar)
-        if items = JSON.parse(response.body)['data']['items']
-          items.map {|item| Response::Calendar.new(item, @connection, @calendar) }
-        else
-          []
+    def find(query)
+      list.each do |cal|
+        if cal.summary == query
+          return @cal = cal
         end
-      elsif redirect? response
-        all(response['location'], redirect_count += 1)
       end
+      @cal
     end
 
-    def create(params = {}, url = nil, redirect_count = 0)
-      url ||= '/calendar/feeds/default/owncalendars/full?alt=jsonc'
-      response = @connection.post url,
-      {
-        :data => {
-          :title => "Unnamed calendar",
-          :hidden => false
-        }.merge(params)
-      }.to_json, Client::HEADERS
-
-      raise 'Redirection Loop' if redirect_count > 3
-
-      if success? response
-        item = JSON.parse(response.body)['data']
-        Response::Calendar.new(item, @connection)
-      elsif redirect?(response)
-        create(params, response['location'], redirect_count += 1)
-      end
+    def create(attrs)
+      @client.execute(api_method: @connection.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
     end
-
-
   end
 end
