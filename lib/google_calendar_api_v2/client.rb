@@ -14,10 +14,6 @@ module GoogleCalendarApiV2
       @client.authorization.scope = 'https://www.googleapis.com/auth/calendar'
       @client.authorization.redirect_uri = redirect_uri
       @connection = @client
-  end
-
-    def callback
-      session[:token] = @client.authorization.fetch_access_token!
     end
 
     def redirect_to
