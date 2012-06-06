@@ -1,7 +1,5 @@
 module GoogleCalendarApiV2
   class Event
-    include Base
-
     attr_reader :client, :connection
 
     def initialize(client)
