@@ -14,8 +14,8 @@ module GoogleCalendarApiV2
       list.data.items
     end
 
-    def find(calendar, query)
-      list.each do |event|
+    def find_by_name(calendar, query)
+      list(calendar).each do |event|
         if event.summary == query
           return @event = event
         end
@@ -23,12 +23,17 @@ module GoogleCalendarApiV2
       @event
     end
 
+    def find_by_id(calendar, id)
+      @client.execute(api_method: @connection.events.get, parameters: { 'calendarId' => calendar.id, 'eventId' => id }).data
+    end
+
     def create(calendar, attrs)
       @client.execute(api_method: @connection.events.insert, parameters: { 'calendarId' => calendar.id }, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
     end
 
     def update(calendar, event_id, attrs)
-      @client.execute(api_method: @connection.events.update, parameters: { 'calendarId' => calendar.id, 'eventId' => event_id }, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
+      sequence = self.find_by_id(calendar, event_id).sequence + 1
+      @client.execute(api_method: @connection.events.update, parameters: { 'calendarId' => calendar.id, 'eventId' => event_id }, body: [JSON.dump(attrs.merge('sequence' => sequence))], headers: {'Content-Type' => 'application/json'})
     end
   end
 end
