@@ -8,11 +8,9 @@ Gem::Specification.new do |s|
 
   s.files        = Dir['README.md', 'LICENSE',
                        'lib/google_calendar_api_v2.rb',
-                       'lib/google_calendar_api_v2/base.rb',
                        'lib/google_calendar_api_v2/client.rb',
                        'lib/google_calendar_api_v2/calendar.rb',
                        'lib/google_calendar_api_v2/event.rb',
-                       'lib/google_calendar_api_v2/error/authentication.rb'
                      ]
 
   s.require_path = 'lib'
