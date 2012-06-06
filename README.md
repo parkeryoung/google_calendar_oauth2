@@ -9,6 +9,8 @@ All you need to survive a syncronization project with Google Calendar using GDat
     require 'sinatra'
     client = GoogleCalendar::Client.new "google_client_id", "google_client_secret", "/oauth2endpoint"
 
+    redirect client.redirect_to
+    
     get '/oauth2endpoint'
         client.connection.authorization.code = params['code']
         client.connection.authorization.fetch_access_token!
