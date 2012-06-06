@@ -12,10 +12,8 @@ Gem::Specification.new do |s|
                        'lib/google_calendar_api_v2/client.rb',
                        'lib/google_calendar_api_v2/calendar.rb',
                        'lib/google_calendar_api_v2/event.rb',
-                       'lib/google_calendar_api_v2/error/authentication.rb',
-                       'lib/google_calendar_api_v2/response/base.rb',
-                       'lib/google_calendar_api_v2/response/calendar.rb',
-                       'lib/google_calendar_api_v2/response/event.rb']
+                       'lib/google_calendar_api_v2/error/authentication.rb'
+                     ]
 
   s.require_path = 'lib'
 
