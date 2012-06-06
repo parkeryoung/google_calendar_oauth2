@@ -1,4 +1,4 @@
-module GoogleCalendarApiV2
+module GoogleCalendar
   class Calendar
     attr_reader :events, :connection, :client
 

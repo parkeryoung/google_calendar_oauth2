@@ -1,7 +1,7 @@
 require 'google/api_client'
 require 'socket'
 
-module GoogleCalendarApiV2
+module GoogleCalendar
   class Client
     attr_reader :headers, :calendars, :events
     attr_accessor :connection
