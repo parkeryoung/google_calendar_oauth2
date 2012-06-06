@@ -3,7 +3,7 @@ Taken from https://github.com/unixcharles/google_calendar_api_v2 and modified fo
 
 All you need to survive a syncronization project with Google Calendar using GData 3.0 + OAuth 2.0
 
-# Synopsis
+# Usage
 
     require 'google_calendar'
     require 'sinatra'
