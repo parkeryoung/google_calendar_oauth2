@@ -35,7 +35,7 @@ module GoogleCalendar
     end
   
     def delete(calendar, event_id)
-      @client.execute(api_method: @connections.events.delete, parameters: { 'calendarId' => calendar.id, 'eventId' => event_id })
+      @client.execute(api_method: @connection.events.delete, parameters: { 'calendarId' => calendar.id, 'eventId' => event_id })
     end
   end
 end
