@@ -1,18 +1,14 @@
 module GoogleCalendar
   class Calendar
-    attr_reader :events, :connection, :client
 
-    def initialize(client)
-      @client = client
-      @connection = @client.discovered_api('calendar', 'v3')
-    end
+    extend Connection
 
-    def list
-      list = client.execute(connection.calendar_list.list)
+    def self.list
+      list = connection.execute(client.calendar_list.list)
       list.data.items
     end
 
-    def find(query)
+    def self.find(query)
       list.each do |cal|
         if cal.summary == query
           return @cal = cal
@@ -21,8 +17,8 @@ module GoogleCalendar
       @cal
     end
 
-    def create(attrs)
-      @client.execute(api_method: @connection.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
+    def self.create(attrs)
+      connection.execute(api_method: client.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
     end
   end
 end
