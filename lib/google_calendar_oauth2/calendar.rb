@@ -23,7 +23,7 @@ module GoogleCalendar
     end
 
     def self.create(attrs)
-      connection.execute(api_method: coclientnnection.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
+      connection.execute(api_method: client.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
     end
   end
 end
