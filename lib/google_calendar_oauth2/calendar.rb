@@ -1,12 +1,7 @@
 module GoogleCalendar
   class Calendar
-    def self.connection
-      GoogleCalendar.connection
-    end
 
-    def self.client
-      GoogleCalendar.connection.discovered_api('calendar', 'v3')
-    end
+    extend Connection
 
     def self.list
       list = connection.execute(client.calendar_list.list)

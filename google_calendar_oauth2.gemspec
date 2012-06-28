@@ -11,7 +11,8 @@ Gem::Specification.new do |s|
                        'lib/google_calendar_oauth2/client.rb',
                        'lib/google_calendar_oauth2/calendar.rb',
                        'lib/google_calendar_oauth2/event.rb',
-                     ]
+                       'lib/google_calendar_oauth2/connection.rb',
+                    ]
 
   s.require_path = 'lib'
 
