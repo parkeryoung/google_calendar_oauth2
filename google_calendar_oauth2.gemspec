@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
 
   s.require_path = 'lib'
 
-  s.add_runtime_dependency 'google-api-client'
+  s.add_dependency 'google-api-client'
 end
