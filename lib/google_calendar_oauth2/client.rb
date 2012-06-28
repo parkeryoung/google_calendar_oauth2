@@ -21,6 +21,7 @@ module GoogleCalendar
       GoogleCalendar.connection.authorization.client_secret = client_secret 
       GoogleCalendar.connection.authorization.scope = 'https://www.googleapis.com/auth/calendar'
       GoogleCalendar.connection.authorization.redirect_uri = redirect_uri
+      @connection = GoogleCalendar.connection
     end
 
     def redirect_to

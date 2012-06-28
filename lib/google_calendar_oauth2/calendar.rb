@@ -1,15 +1,15 @@
 module GoogleCalendar
   class Calendar
-    def self.client
+    def self.connection
       GoogleCalendar.connection
     end
 
-    def self.connection
+    def self.client
       GoogleCalendar.connection.discovered_api('calendar', 'v3')
     end
 
     def self.list
-      list = client.execute(connection.calendar_list.list)
+      list = connection.execute(client.calendar_list.list)
       list.data.items
     end
 
@@ -23,7 +23,7 @@ module GoogleCalendar
     end
 
     def self.create(attrs)
-      client.execute(api_method: connection.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
+      connection.execute(api_method: coclientnnection.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
     end
   end
 end
