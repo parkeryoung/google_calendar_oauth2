@@ -4,6 +4,7 @@ require 'socket'
 module GoogleCalendar
   class Client
     attr_reader :headers, :calendars, :events
+    attr_accessor :connection
     HEADERS = {'Content-Type' => 'application/json', 'GData-Version' => '3.0'}
 
     def initialize(client_id, client_secret, redirect_uri)
