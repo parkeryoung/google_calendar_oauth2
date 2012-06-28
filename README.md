@@ -11,16 +11,16 @@ All you need to survive a syncronization project with Google Calendar using GDat
 
     client = GoogleCalendar::Client.new "google_client_id", "google_client_secret", "http://localhost:4567/oauth2callback"
 
-    get '/?' do
-      unless client.connection.authorization.access_token
+    before do
+      unless GoogleCalendar.connection.authorization.access_token || request.path_info =~ /^\/oauth2/
         redirect client.redirect_to
-      end
+      end 
     end
 
     get '/oauth2callback' do
-      client.connection.authorization.code = params['code']
-      client.connection.authorization.fetch_access_token!
-      redirect '/'
+      GoogleCalendar.connection.authorization.code = params['code']
+      GoogleCalendar.connection.authorization.fetch_access_token!
+      redirect '/create_event'
     end
 
   Create your Gemfile with the following.
