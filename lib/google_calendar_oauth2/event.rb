@@ -5,7 +5,12 @@ module GoogleCalendar
     extend Connection
 
     def initialize(attrs)
-
+      self.id = attrs['id']
+      self.etag = attrs['etag']
+      self.status = attrs['status']
+      self.html_link = attrs['htmlLink']
+      self.created_at = attrs['created']
+      self.updated_at = attrs['updated']
     end
 
     def self.list(calendar_id)
