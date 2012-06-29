@@ -34,10 +34,10 @@ module GoogleCalendar
         calendar_id: calendar_id,
         sequence: sequence,
         start: {
-          'dateTime' => start_time
+          :dateTime => start_time
         },
         end: { 
-          'dateTime' => end_time
+          :dateTime => end_time
         }
       }
     end
@@ -70,13 +70,15 @@ module GoogleCalendar
 
     def update(attrs = {})
       self.sequence = self.sequence.nil? ? 1 : self.sequence + 1
-      self.attributes.merge attrs
-      self.attributes = Event.connection.execute(
+      attrs = self.attributes.merge attrs
+      result = Event.connection.execute(
         api_method: Event.client.events.update, 
         parameters: { 'calendarId' => self.calendar_id, 'eventId' => self.id }, 
-        body: [JSON.dump(self.attributes)], 
+        body: [JSON.dump(attrs)], 
         headers: {'Content-Type' => 'application/json'}
-      ).data
+      ).data.to_hash.merge('calendar_id' => self.calendar_id)
+      self.attributes = result
+      self
     end
   
     def self.delete(calendar_id, event_id)
