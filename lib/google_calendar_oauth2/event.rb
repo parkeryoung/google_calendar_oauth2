@@ -13,9 +13,17 @@ module GoogleCalendar
       self.updated_at = attrs['updated']
     end
 
+    def to_s
+    "#&lt;Event id: #{self.id}, etag: #{self.etag}, status: #{self.status}, html_link: #{self.html_link}, created_at: #{self.created_at}, updated_at: #{self.updated_at}&gt;"
+    end
+
     def self.list(calendar_id)
       list = connection.execute(api_method: client.events.list, parameters: { 'calendarId' => calendar_id })
-      list.data.items
+      events = []
+      list.data.items.each do |event|
+        events << Event.new(event)
+      end
+      events
     end
 
     def self.find_by_name(calendar_id, query)
