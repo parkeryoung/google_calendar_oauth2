@@ -1,20 +1,21 @@
 module GoogleCalendar
   class Event
-    attr_accessor :id, :calendar_id, :start_time, :end_time, :sequence, :etag, :status, :html_link, :created_at, :updated_at
+    attr_accessor :id, :summary, :calendar_id, :start_time, :end_time, :sequence, :etag, :status, :html_link, :created_at, :updated_at
 
     extend Connection
 
     def initialize(attrs)
-      self.id = attrs['id']
-      self.etag = attrs['etag']
-      self.status = attrs['status']
-      self.html_link = attrs['htmlLink']
-      self.created_at = attrs['created']
-      self.updated_at = attrs['updated']
-      self.calendar_id = attrs['calendar_id']
-      self.sequence = attrs['sequence']
-      self.start_time = attrs['start']['dateTime']
-      self.end_time = attrs['end']['dateTime']
+      @id = attrs['id']
+      @etag = attrs['etag']
+      @summary = attrs['summary']
+      @status = attrs['status']
+      @html_link = attrs['htmlLink']
+      @created_at = attrs['created']
+      @updated_at = attrs['updated']
+      @calendar_id = attrs['calendar_id']
+      @sequence = attrs['sequence']
+      @start_time = attrs['start']['dateTime']
+      @end_time = attrs['end']['dateTime']
     end
 
     alias attributes= initialize
@@ -61,13 +62,14 @@ module GoogleCalendar
     end
 
     def self.find_by_id(calendar_id, id)
-      new connection.execute(
+      event = connection.execute(
         api_method: client.events.get, 
         parameters: { 
           'calendarId' => calendar_id, 
           'eventId' => id 
         }
       ).data.to_hash.merge 'calendar_id' => calendar_id
+      new event
     end
 
     def self.create(calendar_id, attrs)
@@ -81,8 +83,8 @@ module GoogleCalendar
 
     def update(attrs = {})
       self.sequence = self.sequence.nil? ? 1 : self.sequence + 1
-      attrs = self.attributes.merge attrs
-      result = Event.connection.execute(
+      attrs = self.attributes.merge(attrs)
+      result = Event.connection.execute( 
         api_method: Event.client.events.update, 
         parameters: { 
           'calendarId' => self.calendar_id, 
