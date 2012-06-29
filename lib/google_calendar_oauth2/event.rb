@@ -61,11 +61,22 @@ module GoogleCalendar
     end
 
     def self.find_by_id(calendar_id, id)
-      new connection.execute(api_method: client.events.get, parameters: { 'calendarId' => calendar_id, 'eventId' => id }).data.to_hash.merge 'calendar_id' => calendar_id
+      new connection.execute(
+        api_method: client.events.get, 
+        parameters: { 
+          'calendarId' => calendar_id, 
+          'eventId' => id 
+        }
+      ).data.to_hash.merge 'calendar_id' => calendar_id
     end
 
     def self.create(calendar_id, attrs)
-      new connection.execute(api_method: client.events.insert, parameters: { 'calendarId' => calendar_id }, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'}).data.to_hash.merge 'calendar_id' => calendar_id
+      new connection.execute(
+        api_method: client.events.insert, 
+        parameters: { 'calendarId' => calendar_id }, 
+        body: [JSON.dump(attrs)], 
+        headers: {'Content-Type' => 'application/json'}
+      ).data.to_hash.merge 'calendar_id' => calendar_id
     end
 
     def update(attrs = {})
@@ -73,7 +84,10 @@ module GoogleCalendar
       attrs = self.attributes.merge attrs
       result = Event.connection.execute(
         api_method: Event.client.events.update, 
-        parameters: { 'calendarId' => self.calendar_id, 'eventId' => self.id }, 
+        parameters: { 
+          'calendarId' => self.calendar_id, 
+          'eventId' => self.id 
+        }, 
         body: [JSON.dump(attrs)], 
         headers: {'Content-Type' => 'application/json'}
       ).data.to_hash.merge('calendar_id' => self.calendar_id)
@@ -82,7 +96,13 @@ module GoogleCalendar
     end
   
     def self.delete(calendar_id, event_id)
-      connection.execute(api_method: client.events.delete, parameters: { 'calendarId' => calendar_id, 'eventId' => event_id })
+      connection.execute(
+        api_method: client.events.delete, 
+        parameters: { 
+          'calendarId' => calendar_id, 
+          'eventId' => event_id 
+        }
+      )
     end
   end
 end
