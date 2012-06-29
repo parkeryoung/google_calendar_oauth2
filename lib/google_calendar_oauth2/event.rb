@@ -1,7 +1,12 @@
 module GoogleCalendar
   class Event
+    attr_accessor :id, :etag, :status, :html_link, :created_at, :updated_at
 
     extend Connection
+
+    def initialize(attrs)
+
+    end
 
     def self.list(calendar_id)
       list = connection.execute(api_method: client.events.list, parameters: { 'calendarId' => calendar_id })
