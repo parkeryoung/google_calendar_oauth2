@@ -1,6 +1,6 @@
 module GoogleCalendar
   class Event
-    attr_accessor :id, :calendar_id, :sequence, :etag, :status, :html_link, :created_at, :updated_at
+    attr_accessor :id, :calendar_id, :start_time, :end_time, :sequence, :etag, :status, :html_link, :created_at, :updated_at
 
     extend Connection
 
@@ -13,10 +13,33 @@ module GoogleCalendar
       self.updated_at = attrs['updated']
       self.calendar_id = attrs['calendar_id']
       self.sequence = attrs['sequence']
+      self.start_time = attrs['start']['dateTime']
+      self.end_time = attrs['end']['dateTime']
     end
 
+    alias attributes= initialize
+
     def to_s
-    "#&lt;Event id: #{self.id}, calendar_id: #{self.calendar_id}, sequence: #{self.sequence}, etag: #{self.etag}, status: #{self.status}, html_link: #{self.html_link}, created_at: #{self.created_at}, updated_at: #{self.updated_at}&gt;"
+    "#&lt;Event id: #{self.id}, start_time: #{self.start_time}, end_time: #{self.end_time}, calendar_id: #{self.calendar_id}, sequence: #{self.sequence}, etag: #{self.etag}, status: #{self.status}, html_link: #{self.html_link}, created_at: #{self.created_at}, updated_at: #{self.updated_at}&gt;"
+    end
+
+    def attributes
+      {
+        id: id,
+        etag: etag,
+        status: status,
+        html_link: html_link,
+        created_at: created_at,
+        updated_at: updated_at,
+        calendar_id: calendar_id,
+        sequence: sequence,
+        start: {
+          'dateTime' => start_time
+        },
+        end: { 
+          'dateTime' => end_time
+        }
+      }
     end
 
     def self.list(calendar_id)
@@ -45,9 +68,15 @@ module GoogleCalendar
       new connection.execute(api_method: client.events.insert, parameters: { 'calendarId' => calendar_id }, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'}).data.to_hash.merge 'calendar_id' => calendar_id
     end
 
-    def update(attrs)
-      sequence = sequence.nil? ? 1 : sequence + 1
-      new connection.execute(api_method: client.events.update, parameters: { 'calendarId' => calendar_id, 'eventId' => event_id }, body: [JSON.dump(attrs.merge('sequence' => sequence))], headers: {'Content-Type' => 'application/json'})
+    def update(attrs = {})
+      self.sequence = self.sequence.nil? ? 1 : self.sequence + 1
+      self.attributes.merge attrs
+      self.attributes = Event.connection.execute(
+        api_method: Event.client.events.update, 
+        parameters: { 'calendarId' => self.calendar_id, 'eventId' => self.id }, 
+        body: [JSON.dump(self.attributes)], 
+        headers: {'Content-Type' => 'application/json'}
+      ).data
     end
   
     def self.delete(calendar_id, event_id)
