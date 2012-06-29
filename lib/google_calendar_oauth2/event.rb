@@ -68,8 +68,8 @@ module GoogleCalendar
           'calendarId' => calendar_id, 
           'eventId' => id 
         }
-      ).data.to_hash.merge 'calendar_id' => calendar_id
-      new event
+      )
+      new event.data.to_hash.merge 'calendar_id' => calendar_id
     end
 
     def self.create(calendar_id, attrs)
