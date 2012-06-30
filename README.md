@@ -36,5 +36,29 @@ All you need to survive a syncronization project with Google Calendar using GDat
 
   In your application directory and go to http://localhost:4567/
 
-#Documentation
-  For the time being it is scarce, but you can get an idea on how to use it from http://code.google.com/p/google-api-ruby-client/source/browse/calendar/calendar.rb?repo=samples
+#Calendar
+
+  Find a Calendar
+
+    calendar = GoogleCalendar::Calendar.find_by_name('Calendar Name')
+
+  List your Calendars
+
+    calendars = GoogleCalendar::Calendar.list
+
+  Create a Calendar
+
+    calendar = GoogleCalendar::Calendar.create({'summary' => 'New Calendar', 'timeZone' => 'America/Chicago'})
+
+#Event
+  Find an event
+
+    GoogleCalendar::Event.find_by_name(calendar.id, 'some event name')
+
+  List events for a calendar
+
+    events = GoogleCalendar::Event.list(calendar.id)
+
+  Create an event
+
+    GoogleCalendar::Event.create({'summary' => 'Some cool event everyone wants to go to.', 'start' => {'dateTime' => '2012-01-29T12:00:00-06:00'}, 'end' => 'dateTime' => '2012-01-29T13:00:00-06:00'})
