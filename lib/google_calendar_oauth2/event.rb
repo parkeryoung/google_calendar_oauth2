@@ -4,7 +4,7 @@ module GoogleCalendar
 
     extend Connection
 
-    def initialize(attrs)
+    def initialize(attrs = {})
       @id = attrs['id']
       @etag = attrs['etag']
       @summary = attrs['summary']
