@@ -21,13 +21,14 @@ module GoogleCalendar
     alias attributes= initialize
 
     def to_s
-    "#&lt;Event id: #{self.id}, start_time: #{self.start_time}, end_time: #{self.end_time}, calendar_id: #{self.calendar_id}, sequence: #{self.sequence}, etag: #{self.etag}, status: #{self.status}, html_link: #{self.html_link}, created_at: #{self.created_at}, updated_at: #{self.updated_at}&gt;"
+    "#&lt;Event id: #{self.id}, summary: #{self.summary}, start_time: #{self.start_time}, end_time: #{self.end_time}, calendar_id: #{self.calendar_id}, sequence: #{self.sequence}, etag: #{self.etag}, status: #{self.status}, html_link: #{self.html_link}, created_at: #{self.created_at}, updated_at: #{self.updated_at}&gt;"
     end
 
     def attributes
       {
         id: id,
         etag: etag,
+        summary: summary,
         status: status,
         html_link: html_link,
         created_at: created_at,
