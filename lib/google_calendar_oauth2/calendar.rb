@@ -6,7 +6,12 @@ module GoogleCalendar
     extend Connection
 
     def initialize(attrs = {})
-
+      @id = params['id']
+      @etag = params['etag']
+      @summary = params['summary']
+      @description = params['description']
+      @location = params['location']
+      @timezone = params['timeZone']
     end
 
 
