@@ -1,7 +1,14 @@
 module GoogleCalendar
   class Calendar
 
+    attr_accessor :id, :etag, :summary, :description, :location, :timezone
+
     extend Connection
+
+    def initialize(attrs = {})
+
+    end
+
 
     def self.list
       list = connection.execute(client.calendar_list.list)
