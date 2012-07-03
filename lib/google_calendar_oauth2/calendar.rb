@@ -6,18 +6,25 @@ module GoogleCalendar
     extend Connection
 
     def initialize(attrs = {})
-      @id = params['id']
-      @etag = params['etag']
-      @summary = params['summary']
-      @description = params['description']
-      @location = params['location']
-      @timezone = params['timeZone']
+      @id = attrs['id']
+      @etag = attrs['etag']
+      @summary = attrs['summary']
+      @description = attrs['description']
+      @location = attrs['location']
+      @timezone = attrs['timeZone']
     end
 
+    def events
+      GoogleCalendar::Event.list(self.id)
+    end
 
     def self.list
+      calendars = []
       list = connection.execute(client.calendar_list.list)
-      list.data.items
+      list.data.items.each do |calendar|
+        calendars << new(calendar)
+      end
+      calendars
     end
 
     def self.find(query)
