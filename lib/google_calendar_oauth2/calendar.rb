@@ -30,14 +30,27 @@ module GoogleCalendar
     def self.find(query)
       list.each do |cal|
         if cal.summary == query
-          return @cal = cal
+          return @cal = new(cal)
         end
       end
       @cal
     end
 
+    def create_event(attrs={})
+      GoogleCalendar::Event.create(self.id, attrs)
+    end
+
+    def event_by_name(query)
+      GoogleCalendar::Event.find_by_name(self.id, query)
+    end
+
+    def event_by_id(event_id)
+      GoogleCalendar::Event.find_by_id(self.id, event_id)
+    end
+
     def self.create(attrs)
-      connection.execute(api_method: client.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
+      calendar = connection.execute(api_method: client.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
+      new calendar.data
     end
   end
 end
