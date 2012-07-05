@@ -21,7 +21,7 @@ module GoogleCalendar
 
     def self.list
       calendars = []
-      list = connection.execute(client.calendar_list.list)
+      list = execute(client.calendar_list.list)
       list.data.items.each do |calendar|
         calendars << new(calendar)
       end

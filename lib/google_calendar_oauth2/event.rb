@@ -42,7 +42,7 @@ module GoogleCalendar
     end
 
     def self.list(calendar_id)
-      list = connection.execute(api_method: client.events.list, parameters: { 'calendarId' => calendar_id })
+      list = execute(api_method: client.events.list, parameters: { 'calendarId' => calendar_id })
       events = []
       list.data.items.each do |event|
         events << new(event)
@@ -60,7 +60,7 @@ module GoogleCalendar
     end
 
     def self.find_by_id(calendar_id, id)
-      event = connection.execute(
+      event = execute(
         api_method: client.events.get, 
         parameters: { 
           'calendarId' => calendar_id, 
@@ -71,7 +71,7 @@ module GoogleCalendar
     end
 
     def self.create(calendar_id, attrs)
-      new connection.execute(
+      new execute(
         api_method: client.events.insert, 
         parameters: { 'calendarId' => calendar_id }, 
         body: [JSON.dump(attrs)], 
@@ -82,7 +82,7 @@ module GoogleCalendar
     def update(attrs = {})
       self.sequence = self.sequence.nil? ? 1 : self.sequence + 1
       attrs = self.attributes.merge(attrs)
-      result = Event.connection.execute( 
+      result = Connection.execute( 
         api_method: Event.client.events.update, 
         parameters: { 
           'calendarId' => self.calendar_id, 
@@ -96,7 +96,7 @@ module GoogleCalendar
     end
   
     def self.delete(calendar_id, event_id)
-      connection.execute(
+      execute(
         api_method: client.events.delete, 
         parameters: { 
           'calendarId' => calendar_id, 
