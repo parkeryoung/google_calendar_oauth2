@@ -10,8 +10,9 @@ module GoogleCalendar
 
     def execute(command)
       result = connection.execute(command)
-      raise GoogleCalendar::Exceptions::Unauthorized if result.data['error']['code'] == 401
-      raise GoogleCalendar::Exceptions::Required if result.data['error']['message'] == "Required" 
+      raise GoogleCalendar::Exceptions::Unauthorized if result.data.to_hash.fetch('error', {}).fetch('code', false) == 401
+      raise GoogleCalendar::Exceptions::Required if result.data.to_hash.fetch('error', {}).fetch('message', false) == "Required" 
+      raise GoogleCalendar::Exceptions::InvalidData if result.data.to_hash.fetch('error', {}).fetch('message', false) == "Invalid Value"
       result
     end
   end

@@ -11,5 +11,6 @@ module GoogleCalendar
       end
       class_name+vars.join(', ')+"&gt;"
     end
+
   end
 end
