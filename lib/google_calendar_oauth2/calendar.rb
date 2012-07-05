@@ -30,7 +30,7 @@ module GoogleCalendar
     def self.find(query)
       list.each do |cal|
         if cal.summary == query
-          return @cal = new(cal)
+          return @cal = cal
         end
       end
       @cal
