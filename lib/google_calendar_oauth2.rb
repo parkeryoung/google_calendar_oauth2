@@ -3,4 +3,5 @@ module GoogleCalendar
   autoload :Calendar, 'google_calendar_oauth2/calendar'
   autoload :Event,    'google_calendar_oauth2/event'
   autoload :Connection, 'google_calendar_oauth2/connection'
+  autoload :Utils, 'google_calendar_oauth2/utils'
 end

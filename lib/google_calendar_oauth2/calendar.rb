@@ -4,6 +4,7 @@ module GoogleCalendar
     attr_accessor :id, :etag, :summary, :description, :location, :timezone
 
     extend Connection
+    include Utils
 
     def initialize(attrs = {})
       @id = attrs['id']

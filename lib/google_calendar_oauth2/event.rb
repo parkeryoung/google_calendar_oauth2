@@ -3,6 +3,7 @@ module GoogleCalendar
     attr_accessor :id, :summary, :calendar_id, :start_time, :end_time, :sequence, :etag, :status, :html_link, :created_at, :updated_at
 
     extend Connection
+    include Utils
 
     def initialize(attrs = {})
       @id = attrs['id']
@@ -19,10 +20,6 @@ module GoogleCalendar
     end
 
     alias attributes= initialize
-
-    def to_s
-    "#&lt;Event id: #{self.id}, summary: #{self.summary}, start_time: #{self.start_time}, end_time: #{self.end_time}, calendar_id: #{self.calendar_id}, sequence: #{self.sequence}, etag: #{self.etag}, status: #{self.status}, html_link: #{self.html_link}, created_at: #{self.created_at}, updated_at: #{self.updated_at}&gt;"
-    end
 
     def attributes
       {
