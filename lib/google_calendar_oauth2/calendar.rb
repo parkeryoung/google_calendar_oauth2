@@ -50,7 +50,7 @@ module GoogleCalendar
     end
 
     def self.create(attrs)
-      calendar = connection.execute(api_method: client.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
+      calendar = execute(api_method: client.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
       new calendar.data
     end
   end
