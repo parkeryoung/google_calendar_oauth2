@@ -16,13 +16,14 @@ module GoogleCalendar
       @cal
     end
 
-    def self.create(attrs)
+    def self.insert(attrs)
       connection.execute(
         api_method: client.calendars.insert,
         body: [JSON.dump(attrs)],
         headers: { "Content-Type" => "application/json" }
       )
     end
+    alias :create :insert
 
     def self.update(calendar_id, attrs)
       connection.execute(
