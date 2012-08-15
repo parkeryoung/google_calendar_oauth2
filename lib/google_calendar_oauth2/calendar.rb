@@ -1,6 +1,5 @@
 module GoogleCalendar
   class Calendar
-
     extend Connection
 
     def self.list
@@ -18,7 +17,18 @@ module GoogleCalendar
     end
 
     def self.create(attrs)
-      connection.execute(api_method: client.calendars.insert, body: [JSON.dump(attrs)], headers: {'Content-Type' => 'application/json'})
+      connection.execute(
+        api_method: client.calendars.insert,
+        body: [JSON.dump(attrs)],
+        headers: { "Content-Type" => "application/json" }
+      )
+    end
+
+    def self.delete(calendar_id)
+      connection.execute(
+        api_method: client.calendars.delete,
+        parameters: { "calendarId" => calendar_id }
+      )
     end
   end
 end
