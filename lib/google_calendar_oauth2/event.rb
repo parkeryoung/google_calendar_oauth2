@@ -38,7 +38,7 @@ module GoogleCalendar
         start: {
           :dateTime => start_time
         },
-        end: { 
+        end: {
           :dateTime => end_time
         }
       }
@@ -64,46 +64,47 @@ module GoogleCalendar
 
     def self.find_by_id(calendar_id, id)
       event = connection.execute(
-        api_method: client.events.get, 
-        parameters: { 
-          'calendarId' => calendar_id, 
-          'eventId' => id 
+        api_method: client.events.get,
+        parameters: {
+          'calendarId' => calendar_id,
+          'eventId' => id
         }
       )
       new event.data.to_hash.merge 'calendar_id' => calendar_id
     end
 
-    def self.create(calendar_id, attrs)
+    def self.insert(calendar_id, attrs)
       new connection.execute(
-        api_method: client.events.insert, 
-        parameters: { 'calendarId' => calendar_id }, 
-        body: [JSON.dump(attrs)], 
+        api_method: client.events.insert,
+        parameters: { 'calendarId' => calendar_id },
+        body: [JSON.dump(attrs)],
         headers: {'Content-Type' => 'application/json'}
       ).data.to_hash.merge 'calendar_id' => calendar_id
     end
+    alias :create :insert
 
     def update(attrs = {})
       self.sequence = self.sequence.nil? ? 1 : self.sequence + 1
       attrs = self.attributes.merge(attrs)
-      result = Event.connection.execute( 
-        api_method: Event.client.events.update, 
-        parameters: { 
-          'calendarId' => self.calendar_id, 
-          'eventId' => self.id 
-        }, 
-        body: [JSON.dump(attrs)], 
+      result = Event.connection.execute(
+        api_method: Event.client.events.update,
+        parameters: {
+          'calendarId' => self.calendar_id,
+          'eventId' => self.id
+        },
+        body: [JSON.dump(attrs)],
         headers: {'Content-Type' => 'application/json'}
       ).data.to_hash.merge('calendar_id' => self.calendar_id)
       self.attributes = result
       self
     end
-  
+
     def self.delete(calendar_id, event_id)
       connection.execute(
-        api_method: client.events.delete, 
-        parameters: { 
-          'calendarId' => calendar_id, 
-          'eventId' => event_id 
+        api_method: client.events.delete,
+        parameters: {
+          'calendarId' => calendar_id,
+          'eventId' => event_id
         }
       )
     end
